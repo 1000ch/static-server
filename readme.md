@@ -6,13 +6,13 @@ The replacement for Python http.server (formerly SimpleHTTPServer).
 
 Get with `go`.
 
-```bash
+```sh
 $ go get github.com/1000ch/static-server
 ```
 
 Build this repository.
 
-```bash
+```sh
 $ go build
 ```
 
@@ -20,15 +20,15 @@ Put the binary `static-server` to the directory in the PATH such like `/usr/loca
 
 ## Usage
 
-Just type `static-server` in the directory to serve.
+Just type and execute `static-server` in the directory to serve.
 
-```
+```sh
 $ static-server
 ```
 
 You can pass a port argument. Default port is **8000**.
 
-```
+```sh
 $ static-server -port 5000
 ```
 
