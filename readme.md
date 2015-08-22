@@ -1,5 +1,7 @@
 # static-server
 
+The replacement for Python http.server (formerly SimpleHTTPServer).
+
 ## Install
 
 Get with `go`.
@@ -13,6 +15,23 @@ Build this repository.
 ```bash
 $ go build
 ```
+
+Put the binary `static-server` to the directory in the PATH such like `/usr/local/bin`.
+
+## Usage
+
+Just type `static-server` in the directory to serve.
+
+```
+$ static-server
+```
+
+You can pass a port argument. Default port is **8000**.
+
+```
+$ static-server -port 5000
+```
+
 
 ## License
 

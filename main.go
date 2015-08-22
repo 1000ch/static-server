@@ -12,7 +12,8 @@ import (
 )
 
 const (
-	Port string = ":8080"
+	message string = "static-server is starting on the port: %v"
+	listenport string = ":%v"
 )
 
 func handler(w http.ResponseWriter, r *http.Request) {
@@ -51,11 +52,18 @@ func handler(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+func init() {
+	log.SetLevel(log.InfoLevel)
+	log.SetOutput(os.Stdout)
+}
+
 func main() {
 
 	port := flag.Int("port", 8000, "Port Number")
 	flag.Parse()
 
+	log.Info(fmt.Sprintf(message, *port))
+
 	http.HandleFunc("/", handler)
-	http.ListenAndServe(fmt.Sprintf(":%v", *port), nil)
+	http.ListenAndServe(fmt.Sprintf(listenport, *port), nil)
 }
