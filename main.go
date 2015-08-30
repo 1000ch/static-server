@@ -13,8 +13,8 @@ import (
 )
 
 const (
-	message              string = "static-server is starting on the port: %v"
-	listenport           string = ":%v"
+	startingMessage      string = "static-server is starting on the port: %v"
+	listenPort           string = ":%v"
 	baseTemplatePath     string = "template/base.html"
 	showDirTemplatePath  string = "template/dir.html"
 	notFoundTemplatePath string = "template/404.html"
@@ -40,6 +40,7 @@ func handler(w http.ResponseWriter, r *http.Request) {
 	wd = fmt.Sprintf("%s/%s", wd, pathname)
 
 	file, err := os.Open(wd)
+
 	if err != nil {
 		NotFound(w)
 		return
@@ -47,6 +48,7 @@ func handler(w http.ResponseWriter, r *http.Request) {
 	defer file.Close()
 
 	fileInfo, err := file.Stat()
+
 	if err != nil {
 		NotFound(w)
 		return
@@ -62,7 +64,9 @@ func handler(w http.ResponseWriter, r *http.Request) {
 }
 
 func ShowFile(w http.ResponseWriter, file *os.File) {
+
 	data, err := ioutil.ReadAll(file)
+
 	if err != nil {
 		NotFound(w)
 		return
@@ -70,12 +74,16 @@ func ShowFile(w http.ResponseWriter, file *os.File) {
 	w.Write(data)
 }
 
-func ShowDir(w http.ResponseWriter, wd string) {
-	fileInfos, err := ioutil.ReadDir(wd)
+func ShowDir(w http.ResponseWriter, dir string) {
+
+	fileInfos, err := ioutil.ReadDir(dir)
+
 	if err != nil {
 		log.Fatal(err)
 	}
+
 	list := make([]string, len(fileInfos))
+
 	for i, file := range fileInfos {
 		filename := file.Name()
 		basename := path.Base(filename)
@@ -84,22 +92,26 @@ func ShowDir(w http.ResponseWriter, wd string) {
 		}
 		list[i] = basename
 	}
+
 	data := struct {
 		Title string
 		Items []string
 	}{
-		Title: fmt.Sprintf("Directory listing for %s/", wd),
+		Title: fmt.Sprintf("%s/", dir),
 		Items: list,
 	}
+
 	showDirTemplate.ExecuteTemplate(w, "base", data)
 }
 
 func NotFound(w http.ResponseWriter) {
+
 	w.WriteHeader(404)
 	notFoundTemplate.ExecuteTemplate(w, "base", nil)
 }
 
 func init() {
+
 	log.SetLevel(log.InfoLevel)
 	log.SetOutput(os.Stdout)
 
@@ -112,8 +124,8 @@ func main() {
 	port := flag.Int("port", 8000, "Port Number")
 	flag.Parse()
 
-	log.Info(fmt.Sprintf(message, *port))
+	log.Info(fmt.Sprintf(startingMessage, *port))
 
 	http.HandleFunc("/", handler)
-	http.ListenAndServe(fmt.Sprintf(listenport, *port), nil)
+	http.ListenAndServe(fmt.Sprintf(listenPort, *port), nil)
 }

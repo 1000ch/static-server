@@ -1,14 +1,14 @@
 {{define "title"}}{{.Title}}{{end}}
 
 {{define "body"}}
-<h2>{{.Title}}</h2>
-<hr/>
-<ul>
-  {{ range $item := .Items }}
-    <li>
-      <a href="{{ $item }}">{{ $item }}</a>
-    </li>
-  {{ end }}
-</ul>
-<hr/>
+  <h1>{{.Title}}</h1>
+  <hr>
+  <ul>
+    {{ range $item := .Items }}
+      <li>
+        <a href="{{ $item }}">{{ $item }}</a>
+      </li>
+    {{ end }}
+  </ul>
+  <hr>
 {{end}}
