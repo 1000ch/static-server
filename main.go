@@ -4,7 +4,6 @@ import (
 	"flag"
 	"fmt"
 	log "github.com/Sirupsen/logrus"
-	"html/template"
 	"io/ioutil"
 	"net/http"
 	"os"
@@ -13,15 +12,9 @@ import (
 )
 
 const (
-	startingMessage      string = "static-server is starting on the port: %v"
-	listenPort           string = ":%v"
-	baseTemplatePath     string = "template/base.html"
-	showDirTemplatePath  string = "template/dir.html"
-	notFoundTemplatePath string = "template/404.html"
+	startingMessage string = "static-server is starting on the port: %v"
+	listenPort      string = ":%v"
 )
-
-var showDirTemplate *template.Template
-var notFoundTemplate *template.Template
 
 func handler(w http.ResponseWriter, r *http.Request) {
 
@@ -38,7 +31,6 @@ func handler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	wd = fmt.Sprintf("%s/%s", wd, pathname)
-
 	file, err := os.Open(wd)
 
 	if err != nil {
@@ -101,22 +93,18 @@ func ShowDir(w http.ResponseWriter, dir string) {
 		Items: list,
 	}
 
-	showDirTemplate.ExecuteTemplate(w, "base", data)
+	directoryTemplate.ExecuteTemplate(w, "html", data)
 }
 
 func NotFound(w http.ResponseWriter) {
 
 	w.WriteHeader(404)
-	notFoundTemplate.ExecuteTemplate(w, "base", nil)
+	notFoundTemplate.ExecuteTemplate(w, "html", nil)
 }
 
 func init() {
-
 	log.SetLevel(log.InfoLevel)
 	log.SetOutput(os.Stdout)
-
-	showDirTemplate, _ = template.ParseFiles(baseTemplatePath, showDirTemplatePath)
-	notFoundTemplate, _ = template.ParseFiles(baseTemplatePath, notFoundTemplatePath)
 }
 
 func main() {
